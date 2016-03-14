@@ -345,7 +345,7 @@ if test==0:
     comp=testComponent
 
     # MC synch file (miniAOD v2)
-    comp.files = ['root://eoscms.cern.ch//eos/cms/store/mc/RunIISpring15MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/30000/001F4F14-786E-E511-804F-0025905A60FE.root']
+    comp.files = ['root://eoscms.cern.ch//eos/cms/store/mc/RunIISpring15MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/30000/001F4F14-786E-E511-804F-0025905A60FE.root','root://eoscms.cern.ch//eos/cms/store/mc/RunIISpring15MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/30000/00B6C8DE-E76E-E511-AEDE-008CFA000BB8.root']
 
 
     # Data synch file (miniAOD v2)
