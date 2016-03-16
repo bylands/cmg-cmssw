@@ -321,8 +321,16 @@ if test==0:
     # --- all this lines taken from CMGTools.RootTools.samples.samples_13TeV_PHYS14
     # --- They may not be in synch anymore 
     from CMGTools.RootTools.samples.ComponentCreator import ComponentCreator
+
+    #from CMGTools.RootTools.samples.samples_13TeV_74X import *
+
+    #selectedComponents = [GJets_HT200to400]
+
     kreator = ComponentCreator()
     testComponent = kreator.makeMCComponent("testComponent", "/GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM", "CMS", ".*root",489.9)
+
+    testComponent.useAAA=True
+
     samples=[testComponent]
 
     json='/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/DCSOnly/json_DCSONLY.txt'
@@ -345,7 +353,7 @@ if test==0:
     comp=testComponent
 
     # MC synch file (miniAOD v2)
-    comp.files = ['root://eoscms.cern.ch//eos/cms/store/mc/Phys14DR/GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/060B8ED3-8571-E411-A2CD-002590D0AFEA.root','root://eoscms.cern.ch//eos/cms/store/mc/Phys14DR/GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/0822A147-8671-E411-AABB-20CF3019DF17.root']
+    comp.files = ['root://xrootd.unl.edu//store/mc/Phys14DR/GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/10DC10A9-8D72-E411-94A5-00259073E4AC.root']
 
     # Data synch file (miniAOD v2)
     #isData = True
