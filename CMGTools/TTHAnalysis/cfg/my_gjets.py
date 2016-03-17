@@ -69,9 +69,9 @@ jetAna.jetEtaCentral = 2.5
 jetAna.jetPt = 10.
 jetAna.mcGT     = "Summer15_25nsV2_MC" # jec corrections
 jetAna.dataGT   = "Summer15_25nsV5_DATA" # jec corrections
-jetAna.recalibrateJets = False # True
-jetAna.applyL2L3Residual = False # 'Data'
-jetAna.calculateSeparateCorrections = False
+jetAna.recalibrateJets = True # True
+jetAna.applyL2L3Residual = True # 'Data'
+jetAna.calculateSeparateCorrections = True
 jetAna.jetLepDR = 0.4
 jetAna.smearJets = False
 jetAna.jetGammaDR = 0.4
@@ -79,6 +79,7 @@ jetAna.minGammaPt = 20.
 jetAna.gammaEtaCentral = 2.4
 jetAna.cleanJetsFromFirstPhoton = True
 jetAna.cleanJetsFromIsoTracks = True ## added for Dominick
+jetAna.calculateType1METCorrection  = True
 
 # TAU 
 tauAna.inclusive_ptMin = 20.0
@@ -109,7 +110,7 @@ isoTrackAna.setOff=False
 isoTrackAna.doIsoAnnulus = True
 
 # recalibrate MET
-metAna.recalibrate = False
+metAna.recalibrate = 'type1'
 metAna.old74XMiniAODs = False # get right Raw MET on old 74X MiniAODs
 
 # store all taus by default
@@ -329,7 +330,7 @@ if test==0:
     kreator = ComponentCreator()
     testComponent = kreator.makeMCComponent("testComponent", "/GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola/Phys14DR-PU20bx25_PHYS14_25_V1-v1/MINIAODSIM", "CMS", ".*root",489.9)
 
-    testComponent.useAAA=True
+    #testComponent.useAAA=True
 
     samples=[testComponent]
 
@@ -353,7 +354,7 @@ if test==0:
     comp=testComponent
 
     # MC synch file (miniAOD v2)
-    comp.files = ['root://xrootd.unl.edu//store/mc/Phys14DR/GJets_HT-200to400_Tune4C_13TeV-madgraph-tauola/MINIAODSIM/PU20bx25_PHYS14_25_V1-v1/00000/10DC10A9-8D72-E411-94A5-00259073E4AC.root']
+    comp.files = ['root://eoscms.cern.ch//eos/cms/store/mc/RunIISpring15MiniAODv2/GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/60000/0002EB7B-E76D-E511-8AD6-00269E95B17C.root','root://eoscms.cern.ch//eos/cms/store/mc/RunIISpring15MiniAODv2/GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/60000/004B91BB-E56D-E511-9500-0025905822B6.root']
 
     # Data synch file (miniAOD v2)
     #isData = True
