@@ -34,10 +34,11 @@ _btagWPs = {
     "CMVAL": ("pfCombinedMVABJetTags", 0.630), # for same b-jet efficiency of CSVv2IVFL on ttbar MC, jet pt > 30
     "CMVAM": ("pfCombinedMVABJetTags", 0.732), # for same b-jet efficiency of CSVv2IVFM on ttbar MC, jet pt > 30
     "CMVAT": ("pfCombinedMVABJetTags", 0.813), # for same b-jet efficiency of CSVv2IVFT on ttbar MC, jet pt > 30
+    "CMVAv2M": ("pfCombinedMVAV2BJetTags", 0.185), ###https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation76X
 
 }
 
-class Jet(PhysicsObject):   
+class Jet(PhysicsObject):
     def __init__(self, *args, **kwargs):
         super(Jet, self).__init__(*args, **kwargs)
         self._physObjInit()
@@ -63,7 +64,7 @@ class Jet(PhysicsObject):
         npn = self.neutralMultiplicity();
         #if npr != self.nConstituents():
         #    import pdb; pdb.set_trace()
-        if name == "POG_PFID":  
+        if name == "POG_PFID":
 
             if   self.jetID("PAG_monoID_Tight") and self.jetID("POG_PFID_Tight") : return 5;
             if   self.jetID("PAG_monoID_Loose") and self.jetID("POG_PFID_Tight") : return 4;
@@ -71,7 +72,7 @@ class Jet(PhysicsObject):
             #elif self.jetID("POG_PFID_Medium") : return 2;  commented this line because this working point doesn't exist anymore (as 12/05/15)
             elif self.jetID("POG_PFID_Loose")  : return 1;
             else                               : return 0;
-        
+
         # jetID from here: https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetID#Recommendations_for_13_TeV_data
         if name == "POG_PFID_Loose":    return ((eta<3.0 and ((npr>1 and phf<0.99 and nhf<0.99) and (eta>2.4 or (elf<0.99 and chf>0 and chm>0)))) or (eta>3.0 and (phf<0.90 and npn>10)));
         if name == "POG_PFID_Medium":   return (npr>1 and phf<0.95 and nhf<0.95 and muf < 0.8) and (eta>2.4 or (elf<0.99 and chf>0 and chm>0));
@@ -97,13 +98,13 @@ class Jet(PhysicsObject):
         puMva = self.puMva(label)
         wp = loose_53X_WP
         eta = abs(self.eta())
-        
+
         for etamin, etamax, cut in wp:
             if not(eta>=etamin and eta<etamax):
                 continue
             return puMva>cut
         return -99
-        
+
     def rawFactor(self):
         return self.jecFactor('Uncorrected') * self._rawFactorMultiplier
 
@@ -115,7 +116,7 @@ class Jet(PhysicsObject):
 
     def setCorrP4(self,newP4):
         self._recalibrated = True
-        corr = newP4.Pt() / (self.pt() * self.rawFactor()) 
+        corr = newP4.Pt() / (self.pt() * self.rawFactor())
         self.setP4(newP4);
         self.setRawFactor(1.0/corr);
 
@@ -135,7 +136,7 @@ class Jet(PhysicsObject):
         if ret == -1000 and name.startswith("pf"):
             ret = self.bDiscriminator(name[2].lower()+name[3:])
         return ret
- 
+
     def btagWP(self,name):
         global _btagWPs
         (disc,val) = _btagWPs[name]
@@ -155,7 +156,7 @@ class Jet(PhysicsObject):
         if lt :
              return lt.pt()
         else :
-             return 0. 
+             return 0.
     def qgl(self) :
        if not hasattr(self,"qgl_value") :
 	  if hasattr(self,"qgl_rho") : #check if qgl calculator is configured
@@ -163,7 +164,7 @@ class Jet(PhysicsObject):
               self.qgl_value=self.qgl_calc(self,self.qgl_rho)
 	  else :
               self.qgl_value=-1. #if no qgl calculator configured
-		  
+
        return self.qgl_value
 
     def computeQGvars(self):
@@ -171,16 +172,16 @@ class Jet(PhysicsObject):
        if not hasattr(self,"qgl_rho") or getattr(self,"hasQGVvars",False) :
 	  return self
        self.hasQGvars = True
-	 
+
        jet = self
        jet.mult = 0
        sum_weight = 0.
-       sum_pt = 0.    
-       sum_deta = 0.  
-       sum_dphi = 0.  
-       sum_deta2 = 0. 
+       sum_pt = 0.
+       sum_deta = 0.
+       sum_dphi = 0.
+       sum_deta2 = 0.
        sum_detadphi = 0.
-       sum_dphi2 = 0.   
+       sum_dphi2 = 0.
 
 
 
@@ -188,29 +189,29 @@ class Jet(PhysicsObject):
 
          part = jet.daughter(ii)
 
-         if part.charge() == 0 : # neutral particles 
+         if part.charge() == 0 : # neutral particles
 
            if part.pt() < 1.: continue
 
          else : # charged particles
 
            if part.trackHighPurity()==False: continue
-           if part.fromPV()<=1: continue             
+           if part.fromPV()<=1: continue
 
 
          jet.mult += 1
 
          deta = part.eta() - jet.eta()
          dphi = deltaPhi(part.phi(), jet.phi())
-         partPt = part.pt()                    
-         weight = partPt*partPt                
-         sum_weight += weight                  
-         sum_pt += partPt                      
-         sum_deta += deta*weight               
-         sum_dphi += dphi*weight               
-         sum_deta2 += deta*deta*weight         
-         sum_detadphi += deta*dphi*weight      
-         sum_dphi2 += dphi*dphi*weight         
+         partPt = part.pt()
+         weight = partPt*partPt
+         sum_weight += weight
+         sum_pt += partPt
+         sum_deta += deta*weight
+         sum_dphi += dphi*weight
+         sum_deta2 += deta*deta*weight
+         sum_detadphi += deta*dphi*weight
+         sum_dphi2 += dphi*dphi*weight
 
 
 
@@ -221,23 +222,22 @@ class Jet(PhysicsObject):
 
        if sum_weight > 0 :
          jet.ptd = math.sqrt(sum_weight)/sum_pt
-         ave_deta = sum_deta/sum_weight        
-         ave_dphi = sum_dphi/sum_weight        
-         ave_deta2 = sum_deta2/sum_weight      
-         ave_dphi2 = sum_dphi2/sum_weight      
-         a = ave_deta2 - ave_deta*ave_deta     
-         b = ave_dphi2 - ave_dphi*ave_dphi     
+         ave_deta = sum_deta/sum_weight
+         ave_dphi = sum_dphi/sum_weight
+         ave_deta2 = sum_deta2/sum_weight
+         ave_dphi2 = sum_dphi2/sum_weight
+         a = ave_deta2 - ave_deta*ave_deta
+         b = ave_dphi2 - ave_dphi*ave_dphi
          c = -(sum_detadphi/sum_weight - ave_deta*ave_dphi)
-       else: jet.ptd = 0.                                  
+       else: jet.ptd = 0.
 
        delta = math.sqrt(math.fabs((a-b)*(a-b)+4.*c*c))
 
        if a+b-delta > 0: jet.axis2 = -math.log(math.sqrt(0.5*(a+b-delta)))
-       else: jet.axis2 = -1.                                              
-       return jet	
-   
+       else: jet.axis2 = -1.
+       return jet
+
 
 
 class GenJet( PhysicsObject):
     pass
-
