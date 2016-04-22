@@ -174,6 +174,7 @@ class GeneratorAnalyzer( Analyzer ):
             print "\n\n"
 
         if self.makeAllGenParticles:
+            print "allGenParticles"
             event.genParticles = allGenParticles
 
         if self.makeSplittedGenLists:
@@ -190,13 +191,18 @@ class GeneratorAnalyzer( Analyzer ):
             event.genbquarksFromTop = []
             event.genbquarksFromH   = []
             event.genlepsFromTop = []
+            event.genrecoils = []
+            
             for p in event.generatorSummary:
                 id = abs(p.pdgId())
-                if id == 25: 
+                if id == 25:
+                    print "genHiggsBoson"
                     event.genHiggsBosons.append(p)
                 elif id in {23,24}:
+                    print "genVBoson"
                     event.genVBosons.append(p)
                 elif id in {12,14,16}:
+                    print "gennu"
                     event.gennus.append(p)
 
                     momids = [(m, abs(m.pdgId())) for m in realGenMothers(p)]
@@ -214,9 +220,11 @@ class GeneratorAnalyzer( Analyzer ):
                 elif id in {11,13}:
                     #taus to separate vector
                     if abs(p.motherId) == 15:
+                        print "gentaulep"
                         event.gentauleps.append(p)
                     #all muons and electrons
                     else:
+                        print "genlep"
                         event.genleps.append(p)
                         momids = [(m, abs(m.pdgId())) for m in realGenMothers(p)]
 
@@ -230,16 +238,23 @@ class GeneratorAnalyzer( Analyzer ):
                                     #save mu,e from t->W->mu/e
                                     event.genlepsFromTop.append(p)
                 elif id == 15:
+                    print "gentau"
                     if self.allGenTaus or not any([abs(d.pdgId()) in {11,13} for d in realGenDaughters(p)]):
                         event.gentaus.append(p)
                 elif id == 6:
+                    print "gentopquark"
                     event.gentopquarks.append(p)
                 elif id == 5:
+                    print "genbquark"
                     event.genbquarks.append(p)
                     momids = [abs(m.pdgId()) for m in realGenMothers(p)]
                     if  6 in momids: event.genbquarksFromTop.append(p)
                     if 25 in momids: event.genbquarksFromH.append(p)
+                elif id == 62:
+                    event.genrecoils.append(p)
+                    print "genRecoil"
                 if id <= 5 and any([abs(m.pdgId()) in {23,24} for m in realGenMothers(p)]):
+                    print "genwzquark"
                     event.genwzquarks.append(p)
 
     def process(self, event):
