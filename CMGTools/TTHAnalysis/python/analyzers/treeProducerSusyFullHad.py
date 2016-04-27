@@ -7,12 +7,13 @@ susyFullHad_globalVariables = susyCore_globalVariables + [
     ##--------------------------------------------------
 ##    NTupleVariable("genQScale", lambda ev : ev.genQScale, help="Generator level binning quantity, QScale"),
     NTupleVariable("LHEweight_original", lambda ev: ev.LHE_originalWeight if  hasattr(ev,'LHE_originalWeight') else  0, mcOnly=True, help="original LHE weight"),
+    NTupleVariable("genRecoil_pt", lambda ev: ev.GenRecoil_pt, float, help="total pt of particles with status 62"),
 
     ##--------------------------------------------------
     ## MET filter information (temporary)
     ##--------------------------------------------------
-    NTupleVariable("Flag_HBHENoiseFilter", lambda ev: ev.hbheFilterNew, help="HBEHE baseline temporary filter decision"),
-    NTupleVariable("Flag_HBHEIsoNoiseFilter", lambda ev: ev.hbheFilterIso, help="HBEHE isolation temporary filter decision"),
+    # NTupleVariable("Flag_HBHENoiseFilter", lambda ev: ev.hbheFilterNew, help="HBEHE baseline temporary filter decision"),
+    # NTupleVariable("Flag_HBHEIsoNoiseFilter", lambda ev: ev.hbheFilterIso, help="HBEHE isolation temporary filter decision"),
     
     ##--------------------------------------------------
     ## energy sums

@@ -69,9 +69,9 @@ jetAna.jetEtaCentral = 2.5
 jetAna.jetPt = 10.
 jetAna.mcGT     = "Summer15_25nsV2_MC" # jec corrections
 jetAna.dataGT   = "Summer15_25nsV5_DATA" # jec corrections
-jetAna.recalibrateJets = False # True
+jetAna.recalibrateJets = True # True
 jetAna.applyL2L3Residual = False # 'Data'
-jetAna.calculateSeparateCorrections = False
+jetAna.calculateSeparateCorrections = True
 jetAna.jetLepDR = 0.4
 jetAna.smearJets = False
 jetAna.jetGammaDR = 0.4
@@ -109,7 +109,7 @@ isoTrackAna.setOff=False
 isoTrackAna.doIsoAnnulus = True
 
 # recalibrate MET
-metAna.recalibrate = False
+metAna.recalibrate = 'type1'
 metAna.old74XMiniAODs = False # get right Raw MET on old 74X MiniAODs
 
 # store all taus by default
@@ -237,7 +237,7 @@ triggerFlagsAna.triggerBits = {
 
 ### Temporary replacement for hbheFilter
 eventFlagsAna.triggerBits = {
-    #        "HBHENoiseFilter" : [ "Flag_HBHENoiseFilter" ], ### hbheFilter temporary replaced
+    "HBHENoiseFilter" : [ "Flag_HBHENoiseFilter" ], ### hbheFilter temporary replaced
     "CSCTightHaloFilter" : [ "Flag_CSCTightHaloFilter" ],
     "hcalLaserEventFilter" : [ "Flag_hcalLaserEventFilter" ],
     "EcalDeadCellTriggerPrimitiveFilter" : [ "Flag_EcalDeadCellTriggerPrimitiveFilter" ],
@@ -286,7 +286,7 @@ sequence = cfg.Sequence(
     MT2Ana,
     ttHTopoJetAna,
     ttHFatJetAna,
-    hbheFilterAna,
+    # hbheFilterAna,
     treeProducer,
     ])
 
@@ -344,13 +344,13 @@ if test==0:
     #sequence = cfg.Sequence([eventSelector] + sequence)
     comp=testComponent
 
-    # MC synch file (miniAOD v2)
-    comp.files = ['root://eoscms.cern.ch//eos/cms/store/mc/RunIISpring15MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/30000/001F4F14-786E-E511-804F-0025905A60FE.root','root://eoscms.cern.ch//eos/cms/store/mc/RunIISpring15MiniAODv2/TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/74X_mcRun2_asymptotic_v2-v1/30000/00B6C8DE-E76E-E511-AEDE-008CFA000BB8.root']
+    # T1tttt synch file (miniAOD v2)
+    # comp.files = ['root://xrootd.unl.edu//store/mc/RunIISpring15MiniAODv2/SMS-T1tttt_mGluino-1475to1500_mLSP-1to1250_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/FastAsympt25ns_74X_mcRun2_asymptotic_v2-v1/80000/0A932556-637E-E511-9E4E-002590DB923E.root']
 
 
-    # Data synch file (miniAOD v2)
-    #isData = True
-    #comp.files = ['root://eoscms.cern.ch//eos/cms/store/data/Run2015D/JetHT/MINIAOD/PromptReco-v4/000/258/177/00000/8ED4BA45-706D-E511-8D36-02163E014418.root']
+    # TTJets synch file (miniAOD v2)
+    #isData = False
+    comp.files = ['root://xrootd.unl.edu//store/mc/RunIIFall15MiniAODv2/TTJets_SingleLeptFromT_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/00000/00D010B5-1EB9-E511-B950-02163E014965.root']
 
 
     #comp.json = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/13TeV/DCSOnly/json_DCSONLY.txt'

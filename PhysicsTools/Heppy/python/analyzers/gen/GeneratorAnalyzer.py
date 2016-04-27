@@ -2,6 +2,8 @@ from PhysicsTools.Heppy.analyzers.core.Analyzer import Analyzer
 from PhysicsTools.Heppy.analyzers.core.AutoHandle import AutoHandle
 from PhysicsTools.Heppy.physicsutils.genutils import isNotFromHadronicShower, realGenMothers, realGenDaughters
 
+import ROOT
+
 def interestingPdgId(id,includeLeptons=False):        
     id = abs(id)
     return id in [6,7,8,17,18] or (includeLeptons and 11 <= id and id < 16) or (22 <= id and id < 40) or id > 1000000
@@ -193,6 +195,7 @@ class GeneratorAnalyzer( Analyzer ):
             event.genbquarksFromTop = []
             event.genbquarksFromH   = []
             event.genlepsFromTop = []
+            event.genrecoils = []
             for p in event.generatorSummary:
                 id = abs(p.pdgId())
                 if id == 25: 
@@ -244,7 +247,19 @@ class GeneratorAnalyzer( Analyzer ):
                     if 25 in momids: event.genbquarksFromH.append(p)
                 if id <= 5 and any([abs(m.pdgId()) in {23,24} for m in realGenMothers(p)]):
                     event.genwzquarks.append(p)
-
+                if p.status() == 62:
+                    event.genrecoils.append(p)
+                    
+        # calculate total pt of particles with status 62
+        pt4 = ROOT.TLorentzVector()
+        for e in event.genrecoils:
+            e4 = ROOT.TLorentzVector()
+            e4.SetPtEtaPhiM(e.pt(), e.eta(), e.phi(), e.mass())
+            pt4 += e4
+            # print "pt4:", pt4.Pt()
+            
+        event.GenRecoil_pt = pt4.Pt()
+            
         #Add LHE weight info
 	event.LHE_weights = []
         event.LHE_originalWeight=1.0
