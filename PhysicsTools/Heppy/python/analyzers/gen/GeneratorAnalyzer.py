@@ -196,8 +196,14 @@ class GeneratorAnalyzer( Analyzer ):
             event.genbquarksFromH   = []
             event.genlepsFromTop = []
             event.genrecoils = []
+            event.status44 = []
+            event.status51 = []
+            event.status52 = []
+
             for p in event.generatorSummary:
                 id = abs(p.pdgId())
+                status = p.status()
+                # print status,
                 if id == 25: 
                     event.genHiggsBosons.append(p)
                 elif id in {23,24}:
@@ -247,18 +253,59 @@ class GeneratorAnalyzer( Analyzer ):
                     if 25 in momids: event.genbquarksFromH.append(p)
                 if id <= 5 and any([abs(m.pdgId()) in {23,24} for m in realGenMothers(p)]):
                     event.genwzquarks.append(p)
-                if p.status() == 62:
+                if status == 62:
                     event.genrecoils.append(p)
-                    
+                if status == 44:
+                    event.status44.append(p)
+                if status == 51:
+                    event.status51.append(p)
+                if status == 52:
+                    event.status52.append(p)
+        
         # calculate total pt of particles with status 62
+        if len(event.genrecoils) > 0:
+            print "\n%s Particles with status 62" % str(len(event.genrecoils))
         pt4 = ROOT.TLorentzVector()
         for e in event.genrecoils:
             e4 = ROOT.TLorentzVector()
             e4.SetPtEtaPhiM(e.pt(), e.eta(), e.phi(), e.mass())
             pt4 += e4
-            # print "pt4:", pt4.Pt()
             
         event.GenRecoil_pt = pt4.Pt()
+                    
+        # calculate total pt of particles with status 44
+        if len(event.status44) > 0:
+            print "\n%s Particles with status 44" % str(len(event.status44))
+        pt4 = ROOT.TLorentzVector()
+        for e in event.status44:
+            e4 = ROOT.TLorentzVector()
+            e4.SetPtEtaPhiM(e.pt(), e.eta(), e.phi(), e.mass())
+            pt4 += e4
+            print "pt: ", pt4.Pt(),
+            
+        event.status44_pt = pt4.Pt()
+                    
+        # calculate total pt of particles with status 51
+        if len(event.status51) > 0:
+            print "\n%s Particles with status 51" % str(len(event.status51))
+        pt4 = ROOT.TLorentzVector()
+        for e in event.status51:
+            e4 = ROOT.TLorentzVector()
+            e4.SetPtEtaPhiM(e.pt(), e.eta(), e.phi(), e.mass())
+            pt4 += e4
+            # print "pt4:", pt4.Pt()
+            
+        event.status51_pt = pt4.Pt()
+                    
+        # calculate total pt of particles with status 52
+        pt4 = ROOT.TLorentzVector()
+        for e in event.status52:
+            e4 = ROOT.TLorentzVector()
+            e4.SetPtEtaPhiM(e.pt(), e.eta(), e.phi(), e.mass())
+            pt4 += e4
+            # print "pt4:", pt4.Pt()
+            
+        event.status52_pt = pt4.Pt()
             
         #Add LHE weight info
 	event.LHE_weights = []
